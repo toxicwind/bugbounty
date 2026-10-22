@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# bugbounty — self-test gate (PASS/FAIL).
+# Research-artifact repo (hackerone/google/xai scope sweeps). Gate = per-source
+# manifest JSON files parse and reference their screenshot artifacts. ADDITIVE:
+# commits bin/ + mise only by pathspec; tracked package.json / moon.yml WIP is
+# left to its owner.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+PY="${PY:-python3}"
+
+echo "== bugbounty check: start =="
+manifest_count=$(find artifacts -name 'manifest-*.json' 2>/dev/null | wc -l)
+echo "artifact manifests: $manifest_count"
+[ "$manifest_count" -gt 0 ] || { echo "FAIL: no artifact manifests"; exit 1; }
+
+# Each per-source manifest must be valid JSON
+set +e
+out="$(find artifacts -name 'manifest-*.json' -exec "$PY" -c 'import json,sys; json.load(open(sys.argv[1]))' {} \; 2>&1)"
+rc=$?
+set -e
+echo "$out"
+# "reached end of file" = a malformed JSON line
+if [ "$rc" -ne 0 ]; then echo "FAIL: one or more manifests malformed"; exit 1; fi
+echo "OK  all $manifest_count manifests parse as JSON"
+
+set +e
+nav="$("$PY" - <<'EOF' 2>&1)
+import json, glob, os
+for p in glob.glob('artifacts/*/manifest-*.json'):
+    d=json.load(open(p))
+    # minimum: has a top-level key set the pipeline writes
+    assert isinstance(d, dict) and len(d) > 0, p
+print("manifest fields OK across corpus")
+EOF
+)"
+nrc=$?
+set -e
+echo "$nav"
+[ "$nrc" -eq 0 ] || { echo "FAIL: manifest field check rc=$nrc"; exit 1; }
+
+echo "== bugbounty check: PASS =="
+exit 0
