@@ -1,0 +1,56 @@
+{
+  "product": "bugbounty",
+  "path": "/home/toxic/pens/ranch/products/bugbounty",
+  "files": 21,
+  "detected_at": "2026-10-30T06:11:06.039760Z",
+  "env_vars": {
+    "BB_ARTIFACT_DIR": [
+      "lib/helpers.mjs"
+    ],
+    "BB_CDP_URL": [
+      "lib/helpers.mjs"
+    ],
+    "BB_CLOSE": [
+      "lib/helpers.mjs",
+      "run-all.mjs"
+    ],
+    "BB_KEEP_OPEN": [
+      "lib/helpers.mjs"
+    ],
+    "BB_USE_SYSTEM_FIREFOX": [
+      "lib/helpers.mjs"
+    ],
+    "DISPLAY": [
+      "lib/helpers.mjs"
+    ],
+    "FIREFOX_BIN": [
+      "lib/helpers.mjs"
+    ],
+    "engine": [
+      "lib/helpers.mjs",
+      "run-all.mjs"
+    ],
+    "keepOpen": [
+      "lib/helpers.mjs"
+    ],
+    "manPath": [
+      "lib/helpers.mjs"
+    ],
+    "mode": [
+      "lib/helpers.mjs",
+      "run-all.mjs"
+    ],
+    "programKey": [
+      "lib/helpers.mjs"
+    ],
+    "shot": [
+      "lib/helpers.mjs"
+    ],
+    "url": [
+      "lib/helpers.mjs"
+    ],
+    "workspaceFolder": [
+      ".vscode/mcp.json"
+    ]
+  }
+}
